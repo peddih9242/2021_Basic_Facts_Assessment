@@ -1,24 +1,26 @@
-def string_checker(question, valid_list, error):
-    # loop function
+def string_checker(question):
     valid = False
     while not valid:
-        # ask question and make input lowercase
+        # take in response and make sure it's lowercase
         response = input(question).lower()
-        # iterate through list to see if input matches
-        # any valid input or first letter of valid input
-        for item in valid_list:
-            if response == item[0] or response == item:
-                return response
-        # if input does not match any items in list, print error
+        # check for valid input, if none then print an error
+        if response == "a" or response == "addition":
+            print("program continues")
+            return "addition"
+        elif response == "s" or response == "subtraction":
+            print("program continues")
+            return "subtraction"
+        elif response == "m" or response == "multiplication":
+            print("program continues")
+            return "multiplication"
+        elif response == "d" or response == "division":
+            print("program continues")
+            return "division"
         else:
-            print(error)
+            print("Please enter addition / subtraction / multiplcation / division.")
 
-# list with valid input
-valid = ["addition", "subtraction", "multiplication", "division"]
+# main routine
 
-# loop
-a = False
-while not a:
-    # ask question for checking if function works
-    word = string_checker("Do you want to do addition, subtraction, multiplication or division? ", valid, "Please enter addition, subtraction, multiplication or division (or a, s, m or d).")
-    print("program continues")
+loop = False
+while not loop:
+    operation = string_checker("Would you like to do addition, subtraction, multiplication or division? ")

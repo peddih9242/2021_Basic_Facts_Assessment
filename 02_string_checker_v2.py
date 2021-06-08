@@ -1,6 +1,3 @@
-import random
-
-# Function(s)
 def string_checker(question, valid_list, error):
     # loop function
     valid = False
@@ -16,31 +13,12 @@ def string_checker(question, valid_list, error):
         else:
             print(error)
 
-# Main routine
+# list with valid input
 valid = ["addition", "subtraction", "multiplication", "division"]
 
 # loop
 a = False
 while not a:
-    
-    # get numbers
-    x = random.randint(1, 10)
-    y = random.randint(1, 10) 
-
-    # ask if user wants to add, subtract, multiply or divide
+    # ask question for checking if function works
     word = string_checker("Do you want to do addition, subtraction, multiplication or division? ", valid, "Please enter addition, subtraction, multiplication or division (or a, s, m or d).")
-    if word == "addition":
-        print("{} + {}".format(x, y))
-    elif word == "subtraction":
-        if y > x:
-            print("{} - {}".format(y, x))
-        else:
-            print("{} - {}".format(x, y))
-    elif word == "multiplication":
-        print("{} * {}".format(x, y))
-    elif word == "division":
-        numerator = x * y
-        if x % 2 == 0:
-            print("{} / {}".format(numerator, x))
-        else:
-            print("{} / {}".format(numerator, y))
+    print("program continues")

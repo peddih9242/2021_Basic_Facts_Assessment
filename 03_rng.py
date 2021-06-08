@@ -11,7 +11,7 @@ def string_checker(question, valid_list, error):
         # any valid input or first letter of valid input
         for item in valid_list:
             if response == item[0] or response == item:
-                return response
+                return item
         # if input does not match any items in list, print error
         else:
             print(error)

@@ -1,5 +1,21 @@
 import random
 
+def answer_check():
+    valid = False
+    while not valid:
+        try:
+            response = input("Answer: ").lower()
+            # if make response an integer if exit code not given
+            if response != "xxx":
+                response = int(response)
+                return response
+            # if exit code is given, exit loop
+            else:
+                break
+        # if input is not valid, print error
+        except ValueError:
+            print("Please enter an integer (or the exit code).")
+
 def check_rounds():
     while True:
         # ask for amount of rounds

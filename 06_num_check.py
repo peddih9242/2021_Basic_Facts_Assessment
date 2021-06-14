@@ -1,21 +1,5 @@
 import random
 
-def answer_check():
-    valid = False
-    while not valid:
-        try:
-            response = input("Answer: ").lower()
-            # if make response an integer if exit code not given
-            if response != "xxx":
-                response = int(response)
-                return response
-            # if exit code is given, exit loop
-            else:
-                break
-        # if input is not valid, print error
-        except ValueError:
-            print("Please enter an integer (or the exit code).")
-
 def check_rounds():
     while True:
         # ask for amount of rounds
@@ -38,6 +22,18 @@ def check_rounds():
                 continue
         return response
 
+def answer_check():
+    valid = False
+    while not valid:
+        try:
+            response = int(input("Answer: "))
+            if response < 0:
+                print("Please enter an integer above 0.")
+            else:
+                return response
+        except ValueError:
+            print("Please enter an integer above 0.")
+
 # main routine
 
 rounds = check_rounds()
@@ -53,11 +49,8 @@ while not valid:
         print("Round {} of {}".format(rounds_played, rounds))
     problem = "{} + {}".format(x, y)
     print(problem)
-    answer = input("Answer: ")
-    if answer == "xxx":
-        break
-    answer = int(answer)
-    if rounds_played == rounds:
+    answer = answer_check()
+    if answer == 12345 or rounds_played == rounds:
         valid = True
     elif answer == eval(problem):
         print("Correct!")

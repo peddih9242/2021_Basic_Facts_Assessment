@@ -29,23 +29,32 @@ while not a:
     
     # ask if user wants to add, subtract, multiply or divide
     word = string_checker("Do you want to do addition, subtraction, multiplication or division? ", valid, "Please enter addition, subtraction, multiplication or division (or a, s, m or d).")
+    
     if word == "a" or word == "addition":
         problem = ("{} + {}".format(x, y))
+    
     elif word == "s" or word == "subtraction":
+        # make sure subtraction outcome is positive
         if y > x:
             problem = ("{} - {}".format(y, x))
         else:
             problem = ("{} - {}".format(x, y))
+    
     elif word == "m" or word == "multiplication":
         problem = ("{} * {}".format(x, y))
+    
     elif word == "d" or word == "division":
+        # make sure the outcome of division is an integer
         numerator = x * y
+        # randomly choose the number to divide by
         if x % 2 == 0:
             problem = ("{} / {}".format(numerator, x))
         else:
             problem = ("{} / {}".format(numerator, y))
     print("Problem: {}".format(problem))
     answer = int(input("Answer: "))
+    
+    # check for correct answer
     if answer == eval(problem):
         print("Correct!")
     else:

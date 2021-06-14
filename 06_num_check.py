@@ -43,10 +43,6 @@ while not valid:
     x = random.randint(1, 10)
     y = random.randint(1, 10)
     rounds_played += 1
-    if rounds == "":
-        print("Infinite Mode - Round {}".format(rounds_played))
-    else:
-        print("Round {} of {}".format(rounds_played, rounds))
     problem = "{} + {}".format(x, y)
     print(problem)
     answer = answer_check()

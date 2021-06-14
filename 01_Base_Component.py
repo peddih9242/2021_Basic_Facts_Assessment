@@ -42,8 +42,8 @@ def check_rounds():
                 continue
         return response
 
-# answer checker, makes sure that the answer is valid
-def answer_check():
+# number checker, makes sure that the answer is valid
+def num_check():
     valid = False
     while not valid:
         try:
@@ -59,7 +59,9 @@ def answer_check():
             print("Please enter an integer.")
 
 # Main routine
+# lists for string checker valid input
 operations = ["addition", "subtraction", "multiplication", "division"]
+diffs = ["easy", "medium", "hard"]
 
 # ask for how many rounds
 rounds = check_rounds()
@@ -70,11 +72,23 @@ word = string_checker("Do you want to do addition, subtraction, multiplication o
 # loop
 valid = False
 rounds_played = 0
+
+# ask for difficulty and set difficulty based on response
+difficulty = string_checker("Which difficulty would you like to play (easy / medium / hard): " , diffs, "Please enter easy, medium or hard.")
+if difficulty == "easy":
+    low_num = 1
+    high_num = 5
+elif difficulty == "medium":
+    low_num = 3
+    high_num = 10
+elif difficulty == "hard":
+    low_num = 5
+    high_num = 15
 while not valid:
     rounds_played += 1
     # get numbers to use in equation
-    x = random.randint(1, 10)
-    y = random.randint(1, 10)
+    x = random.randint(low_num, high_num)
+    y = random.randint(low_num, high_num)
 
     if word == "addition":
         problem = ("{} + {}".format(x, y))
@@ -94,7 +108,7 @@ while not valid:
     elif word == "m" or "multiplication":
         improved = problem.replace("*", "x")
     print("Problem: {}".format(improved))
-    user_answer = answer_check()
+    user_answer = num_check()
     if answer == 12345 or rounds_played == rounds:
         valid = True
     elif user_answer == eval(problem):

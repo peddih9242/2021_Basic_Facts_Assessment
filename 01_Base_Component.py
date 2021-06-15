@@ -23,7 +23,7 @@ def string_checker(question, valid_list, error):
 def check_rounds():
     while True:
         # ask for amount of rounds
-        response = input("How many rounds: ")
+        response = input("How many questions would you like to play? (or <enter> for infinite mode): ")
         round_error = "Please type either an integer that is higher than 0."
         # if user has not opted for infinite mode, 
         # make input an integer
@@ -60,58 +60,82 @@ def num_check():
 
 # Main routine
 # lists for string checker valid input
-operations = ["addition", "subtraction", "multiplication", "division"]
 diffs = ["easy", "medium", "hard"]
 
-# ask for how many rounds
+# ask for how many questions the user wants to play
 rounds = check_rounds()
 
-# ask if user wants to add, subtract, multiply or divide
-word = string_checker("Do you want to do addition, subtraction, multiplication or division? ", operations, "Please enter addition, subtraction, multiplication or division (or a, s, m or d).")
+# ask for easy, medium or hard difficulty
+difficulty = string_checker("Easy, medium or hard? ", diffs, "Please enter easy, medium or hard.")
 
-# loop
+# based on difficulty set the operations that can be chosen
+# and the higher boundary of the numbers in the question
+if difficulty == "easy":
+    high_num_add = 10
+    op_high = 2
+elif difficulty == "medium":
+    high_num_add = 20
+    high_num_multi = 5
+    op_high = 3
+elif difficulty == "hard":
+    high_num_add = 50
+    high_num_multi = 10
+    op_high = 4
+
+# loop the game
 valid = False
 rounds_played = 0
-
-# ask for difficulty and set difficulty based on response
-difficulty = string_checker("Which difficulty would you like to play (easy / medium / hard): " , diffs, "Please enter easy, medium or hard.")
-if difficulty == "easy":
-    low_num = 1
-    high_num = 5
-elif difficulty == "medium":
-    low_num = 3
-    high_num = 10
-elif difficulty == "hard":
-    low_num = 5
-    high_num = 15
 while not valid:
     rounds_played += 1
-    # get numbers to use in equation
-    x = random.randint(low_num, high_num)
-    y = random.randint(low_num, high_num)
 
-    if word == "addition":
-        problem = ("{} + {}".format(x, y))
-    elif word == "subtraction":
+    # choose which operation to go through, 1 is addition
+    # 2 is subtraction, 3 is multiplication, 4 is division
+    operation_chosen = random.randint(1, op_high)
+    
+    # generate numbers for addition / subtraction
+    x = random.randint(1, high_num_add)
+    y = random.randint(1, high_num_add)
+
+    # if addition chosen, get addition question
+    if operation_chosen == 1:
+        problem = "{} + {}".format(x, y)
+
+    # if subtraction chosen, get subtraction question
+    elif operation_chosen == 2:
+        # make sure that the result of subtraction is positive
         if y > x:
-            problem = ("{} - {}".format(y, x))
+            problem = "{} - {}".format(y, x)
         else:
-            problem = ("{} - {}".format(x, y))
-    elif word == "multiplication":
-        problem = ("{} * {}".format(x, y))
-    elif word == "division":
-        numerator = x * y
-        problem = ("{} / {}".format(numerator, y))
+            problem = "{} - {}".format(x, y)
+    if operation_chosen >= 3:
+        # generate numbers for multiplication and division
+        x = random.randint(1, high_num_multi)
+        y = random.randint(1, high_num_multi)
+        
+        # if multiplication chosen, get multiplcation question
+        if operation_chosen == 3:
+            problem = "{} * {}".format(x, y)
+        
+        # if division chosen, get division question
+        elif operation_chosen == 4:
+            numerator = x * y
+            problem = "{} / {}".format(numerator, y)
+    
+    # get answer of the question
     answer = eval(problem)
-    if word == "d" or "division":
-        improved = problem.replace("/", "÷")
-    elif word == "m" or "multiplication":
-        improved = problem.replace("*", "x")
-    print("Problem: {}".format(improved))
+
+    # change the look of the question to be more understandable
+    if operation_chosen == 3:
+        problem = problem.replace("*", "x")
+    elif operation_chosen == 4:
+        problem = problem.replace("/", "÷")
+    print("Problem: {}".format(problem))
     user_answer = num_check()
     if answer == 12345 or rounds_played == rounds:
         valid = True
-    elif user_answer == eval(problem):
+
+    # check if the user was correct and tell user
+    elif user_answer == answer:
         print("Correct!")
     else:
         print("Incorrect.")

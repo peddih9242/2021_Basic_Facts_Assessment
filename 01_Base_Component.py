@@ -58,9 +58,18 @@ def num_check():
         except ValueError:
             print("Please enter an integer.")
 
+def instructions():
+    print("INSTRUCTIONS")
+    print("you choose difficulty")
+    print("you choose rounds")
+    print("you get question")
+    print("you answer right or wrong we tell you")
+    print("we rate performance at end")
+    
 # Main routine
-# lists for string checker valid input
+# lists for string checker valid input and game summary
 diffs = ["easy", "medium", "hard"]
+game_summary = []
 
 # ask for how many questions the user wants to play
 rounds = check_rounds()
@@ -82,9 +91,11 @@ elif difficulty == "hard":
     high_num_multi = 10
     op_high = 4
 
-# loop the game
+# loop the game and set up round variables
 valid = False
 rounds_played = 0
+rounds_won = 0
+rounds_lost = 0
 while not valid:
     rounds_played += 1
 
@@ -137,5 +148,30 @@ while not valid:
     # check if the user was correct and tell user
     elif user_answer == answer:
         print("Correct!")
+        rounds_won += 1
+        result = "Round {}: You said {} = {} which is correct!".format(rounds_played, problem, answer)
+        game_summary.append(result)
     else:
         print("Incorrect.")
+        rounds_lost += 1
+        result = "Round {}: You said {} = {} which is incorrect.".format(rounds_played, problem, answer)
+        game_summary.append(result)
+print("Game Summary")
+print("Correct: {} | Incorrect: {}".format(rounds_won, rounds_lost))
+average = 1 / rounds * rounds_won
+if 1 > average >= 0.8:
+    print("Rating: *****")
+elif 0.8 > average >= 0.6:
+    print("Rating: ****")
+elif 0.6 > average >= 0.4:
+    print("Rating: ***")
+elif 0.4 > average >= 0.2:
+    print("Rating: **")
+elif 0.2 > average >= 0:
+    print("Rating: *")
+show_rounds = input("Show each round? ")
+if show_rounds == "yes":
+    for item in game_summary:
+        print(item)
+else:
+    print("Thanks for playing")

@@ -18,8 +18,7 @@ def string_checker(question, valid_list, error):
         else:
             print(error)
 
-# round checker, makes sure round input is okay and checks for
-# infinite mode
+# round checker, makes sure round input is valid and checks for infinite mode
 def check_rounds():
     while True:
         # ask for amount of rounds
@@ -42,7 +41,7 @@ def check_rounds():
                 continue
         return response
 
-# number checker, makes sure that the answer is valid
+# number checker, makes sure that answers are valid
 def num_check():
     valid = False
     while not valid:
@@ -58,6 +57,7 @@ def num_check():
         except ValueError:
             print("Please enter an integer.")
 
+# instruction function, prints instructions
 def instructions():
     print("INSTRUCTIONS")
     print("you choose difficulty")
@@ -65,10 +65,23 @@ def instructions():
     print("you get question")
     print("you answer right or wrong we tell you")
     print("we rate performance at end")
+
+# statement generator, decorates important statements
+def statement_gen(statement, decoration):
+    # create sides to add to statement, and top / bottom decorations
+    sides = decoration * 3
+    statement = "{} {} {}".format(sides, statement, sides)
+    top_bot = decoration * len(statement)
     
+    # print decorations and statements
+    print(top_bot)
+    print(statement)
+    print(top_bot)
+
 # Main routine
 # lists for string checker valid input and game summary
 diffs = ["easy", "medium", "hard"]
+yes_no = ["yes", "no"]
 game_summary = []
 
 # ask for how many questions the user wants to play
@@ -156,6 +169,7 @@ while not valid:
         rounds_lost += 1
         result = "Round {}: You said {} = {} which is incorrect.".format(rounds_played, problem, answer)
         game_summary.append(result)
+# print game stats and rating
 print("Game Summary")
 print("Correct: {} | Incorrect: {}".format(rounds_won, rounds_lost))
 average = 1 / rounds * rounds_won
@@ -169,7 +183,8 @@ elif 0.4 > average >= 0.2:
     print("Rating: **")
 elif 0.2 > average >= 0:
     print("Rating: *")
-show_rounds = input("Show each round? ")
+# ask if user wants to see each round
+show_rounds = string_checker("Show each round? ", yes_no, "Please enter yes or no.")
 if show_rounds == "yes":
     for item in game_summary:
         print(item)

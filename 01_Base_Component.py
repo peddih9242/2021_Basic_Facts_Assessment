@@ -17,6 +17,7 @@ def string_checker(question, valid_list, error):
         # if input does not match any items in list, print error
         else:
             print(error)
+            print()
 
 # round checker, makes sure round input is valid and checks for infinite mode
 def check_rounds():
@@ -51,18 +52,21 @@ def num_check():
             # if given answer is negative, print error
             if response < 0:
                 print("Please enter an integer above 0.")
+                print()
             else:
                 return response
         # if answer is not an integer, print error
         except ValueError:
             print("Please enter an integer.")
+            print()
 
 # instruction function, prints instructions
 def instructions():
-    print("INSTRUCTIONS")
+    statement_gen("INSTRUCTIONS", "*")
     print("you choose difficulty")
     print("you choose rounds")
     print("you get question")
+    print("you can exit by entering 12345")
     print("you answer right or wrong we tell you")
     print("we rate performance at end")
 
@@ -84,11 +88,16 @@ diffs = ["easy", "medium", "hard"]
 yes_no = ["yes", "no"]
 game_summary = []
 
-# ask for how many questions the user wants to play
-rounds = check_rounds()
+# ask if user has played before, for amount of rounds and difficulty
+played_before = string_checker("Have you played this game before? ", yes_no, "Please enter yes or no (or y / n).")
+if played_before == "no":
+    instructions()
+print()
 
-# ask for easy, medium or hard difficulty
+rounds = check_rounds()
+print()
 difficulty = string_checker("Easy, medium or hard? ", diffs, "Please enter easy, medium or hard.")
+print()
 
 # based on difficulty set the operations that can be chosen
 # and the higher boundary of the numbers in the question
@@ -155,25 +164,39 @@ while not valid:
         problem = problem.replace("/", "÷")
     print("Problem: {}".format(problem))
     user_answer = num_check()
-    if answer == 12345 or rounds_played == rounds:
-        valid = True
+    
+    # end the game if exit code given
+    if user_answer == 12345:
+        rounds_played -= 1
+        if rounds_played == 0:
+            print("Please play a round before exiting!")
+        else:
+            valid = True
 
     # check if the user was correct and tell user
     elif user_answer == answer:
         print("Correct!")
         rounds_won += 1
-        result = "Round {}: You said {} = {} which is correct!".format(rounds_played, problem, answer)
+        result = "Round {}: You said {} = {:.0f} which is correct!".format(rounds_played, problem, answer)
         game_summary.append(result)
     else:
         print("Incorrect.")
         rounds_lost += 1
-        result = "Round {}: You said {} = {} which is incorrect.".format(rounds_played, problem, answer)
+        result = "Round {}: You said {} = {:.0f} which is incorrect.".format(rounds_played, problem, answer)
         game_summary.append(result)
+    
+    # end the game if rounds are done
+    if rounds_played == rounds:
+        valid = True
+
 # print game stats and rating
-print("Game Summary")
+statement_gen("Game Summary", "*")
 print("Correct: {} | Incorrect: {}".format(rounds_won, rounds_lost))
-average = 1 / rounds * rounds_won
-if 1 > average >= 0.8:
+
+# calculate rating
+average = 1 / rounds_played * rounds_won
+
+if 1 >= average >= 0.8:
     print("Rating: *****")
 elif 0.8 > average >= 0.6:
     print("Rating: ****")
@@ -183,8 +206,9 @@ elif 0.4 > average >= 0.2:
     print("Rating: **")
 elif 0.2 > average >= 0:
     print("Rating: *")
-# ask if user wants to see each round
-show_rounds = string_checker("Show each round? ", yes_no, "Please enter yes or no.")
+
+# ask if user wants to see round history
+show_rounds = string_checker("Would you like to see your round history?  ", yes_no, "Please enter yes or no.")
 if show_rounds == "yes":
     for item in game_summary:
         print(item)

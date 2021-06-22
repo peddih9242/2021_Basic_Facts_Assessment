@@ -103,7 +103,7 @@ loop_game = ""
 while loop_game == "":
     
     # get the number of rounds (or take in <blank> for infinite mode)
-    rounds = check_rounds()
+    questions = check_rounds()
     print()
     # ask for the difficulty the user wants to play
     statement_gen("Difficulties", "!")
@@ -127,16 +127,16 @@ while loop_game == "":
 
     # loop each question and set up round variables
     loop_question = False
-    rounds_played = 0
-    rounds_won = 0
-    rounds_lost = 0
+    questions_done = 0
+    questions_correct = 0
+    questions_incorrect = 0
     while not loop_question:
-        rounds_played += 1
-        # print heading each round
-        if rounds == "":
-            statement_gen("Infinite Mode - Question {}".format(rounds_played), "*")
+        questions_done += 1
+        # print heading each question
+        if questions == "":
+            statement_gen("Infinite Mode - Question {}".format(questions_done), "*")
         else:
-            statement_gen("Question {} of {}".format(rounds_played, rounds), "*")
+            statement_gen("Question {} of {}".format(questions_done, questions), "*")
         print()
 
         # choose which operation to go through, 1 is addition
@@ -169,7 +169,7 @@ while loop_game == "":
             # if multiplication chosen, get multiplcation question
             if operation_chosen == 3:
                 problem = "{} * {}".format(x, y)
-            
+
             # if division chosen, get division question
             elif operation_chosen == 4:
                 numerator = x * y
@@ -186,10 +186,10 @@ while loop_game == "":
         print("Question: {}".format(problem))
         user_answer = num_check()
 
-        # end the game if exit code given (don't allow if no rounds played)
+        # end the game if exit code given (don't allow if no questions answered)
         if user_answer == 12345:
-            rounds_played -= 1
-            if rounds_played == 0:
+            questions_done -= 1
+            if questions_done == 0:
                 print("Please answer a question before exiting!")
                 print()
             else:
@@ -198,40 +198,43 @@ while loop_game == "":
         # check if the user was correct/incorrect and tell user
         elif user_answer == answer:
             print("Correct!")
-            rounds_won += 1
-            result = "Question {}: You said {} = {:.0f} which is correct!".format(rounds_played, problem, answer)
+            questions_correct += 1
+            result = "Question {}: You said {} = {:.0f} which is correct!".format(questions_done, problem, user_answer)
             round_history.append(result)
             print()
         else:
             print("Incorrect, the answer was {}.".format(answer))
-            rounds_lost += 1
-            result = "Question {}: You said {} = {:.0f} which is incorrect.".format(rounds_played, problem, answer)
+            questions_incorrect += 1
+            result = "Question {}: You said {} = {:.0f} which is incorrect.".format(questions_done, problem, user_answer)
             round_history.append(result)
             print()
 
-        # end the game if rounds are done
-        if rounds_played == rounds:
+        # end the game if completed the amount of questions given
+        if questions_done == questions:
             loop_question = True
 
     # print game stats and rating
     print()
     statement_gen("Game Summary", "*")
     print()
-    statement_gen("Correct: {} | Incorrect: {}".format(rounds_won, rounds_lost), "=")
+    statement_gen("Correct: {} | Incorrect: {}".format(questions_correct, questions_incorrect), "=")
     print()
 
     # calculate rating and show rating to user
-    average = 1 / rounds_played * rounds_won
+    # 100-81% of questions correct = 5 stars, 80-61% = 4 stars,
+    # 60-41% = 3 stars, 40-21% = 2 stars, 20-0% = 1 star
 
-    if 1 >= average >= 0.8:
+    average = 1 / questions_done * questions_correct
+
+    if 1 >= average > 0.8:
         statement_gen("Your Performance: *****", "!")
-    elif 0.8 > average > 0.6:
+    elif 0.8 >= average > 0.6:
         statement_gen("Your Performance: ****", "!")
     elif 0.6 >= average > 0.4:
         statement_gen("Your Performance: ***", "!")
     elif 0.4 >= average > 0.2:
         statement_gen("Your Performance: **", "!")
-    elif 0.2 >= average > 0:
+    elif 0.2 >= average >= 0:
         statement_gen("Your Performance: *", "!")
 
     # ask if user wants to see round history

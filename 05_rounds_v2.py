@@ -27,20 +27,25 @@ def check_rounds():
 rounds = check_rounds()
 valid = False
 rounds_played = 0
+# loop for rounds
 while not valid:
+    # get numbers to use in question
     x = random.randint(1, 10)
     y = random.randint(1, 10)
     rounds_played += 1
+    # round heading
     if rounds == "":
         print("Infinite Mode - Round {}".format(rounds_played))
     else:
         print("Round {} of {}".format(rounds_played, rounds))
+    # make question into a string to evaluate
     problem = "{} + {}".format(x, y)
     print(problem)
-    answer = input("Answer: ")
-    if answer == "xxx":
+    # ask for answer
+    answer = int(input("Answer: "))
+    # check for exit code, rounds met or answer correct/incorrect
+    if answer == 12345:
         break
-    answer = int(answer)
     if rounds_played == rounds:
         valid = True
     elif answer == eval(problem):

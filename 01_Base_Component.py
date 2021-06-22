@@ -86,28 +86,33 @@ def statement_gen(statement, decoration):
 # lists for string checker valid input and game summary
 diffs = ["easy", "medium", "hard"]
 yes_no = ["yes", "no"]
-game_summary = []
+round_history = []
 
+# heading for game
 statement_gen("Maths Quiz", "?")
 print()
 
-# ask if user has played before, for amount of rounds and difficulty
+# ask if user has played before and give instructions if they haven't
 played_before = string_checker("Have you played this game before? ", yes_no, "Please enter yes or no (or y / n).")
 if played_before == "no":
     instructions()
 print()
 
-keep_going = ""
-while keep_going == "":
+# loop the game
+loop_game = ""
+while loop_game == "":
+    
+    # get the number of rounds (or take in <blank> for infinite mode)
     rounds = check_rounds()
     print()
+    # ask for the difficulty the user wants to play
     statement_gen("Difficulties", "!")
     print()
     difficulty = string_checker("Would you like to play easy, medium or hard? ", diffs, "Please enter easy, medium or hard.")
     print()
 
     # based on difficulty set the operations that can be chosen
-    # and the higher boundary of the numbers in the question
+    # and the higher boundary of the numbers in the questions
     if difficulty == "easy":
         high_num_add = 10
         op_high = 2
@@ -120,13 +125,14 @@ while keep_going == "":
         high_num_multi = 10
         op_high = 4
 
-    # loop the game and set up round variables
-    valid = False
+    # loop each question and set up round variables
+    loop_question = False
     rounds_played = 0
     rounds_won = 0
     rounds_lost = 0
-    while not valid:
+    while not loop_question:
         rounds_played += 1
+        # print heading each round
         if rounds == "":
             statement_gen("Infinite Mode - Question {}".format(rounds_played), "*")
         else:
@@ -152,11 +158,14 @@ while keep_going == "":
                 problem = "{} - {}".format(y, x)
             else:
                 problem = "{} - {}".format(x, y)
+
+        # only check for multiplication and division if it is one of the two
         if operation_chosen >= 3:
+
             # generate numbers for multiplication and division
             x = random.randint(1, high_num_multi)
             y = random.randint(1, high_num_multi)
-            
+
             # if multiplication chosen, get multiplcation question
             if operation_chosen == 3:
                 problem = "{} * {}".format(x, y)
@@ -165,7 +174,7 @@ while keep_going == "":
             elif operation_chosen == 4:
                 numerator = x * y
                 problem = "{} / {}".format(numerator, y)
-        
+
         # get answer of the question
         answer = eval(problem)
 
@@ -176,7 +185,7 @@ while keep_going == "":
             problem = problem.replace("/", "÷")
         print("Question: {}".format(problem))
         user_answer = num_check()
-        
+
         # end the game if exit code given (don't allow if no rounds played)
         if user_answer == 12345:
             rounds_played -= 1
@@ -184,28 +193,30 @@ while keep_going == "":
                 print("Please answer a question before exiting!")
                 print()
             else:
-                valid = True
+                loop_question = True
 
-        # check if the user was correct and tell user
+        # check if the user was correct/incorrect and tell user
         elif user_answer == answer:
             print("Correct!")
             rounds_won += 1
             result = "Question {}: You said {} = {:.0f} which is correct!".format(rounds_played, problem, answer)
-            game_summary.append(result)
+            round_history.append(result)
             print()
         else:
             print("Incorrect, the answer was {}.".format(answer))
             rounds_lost += 1
             result = "Question {}: You said {} = {:.0f} which is incorrect.".format(rounds_played, problem, answer)
-            game_summary.append(result)
+            round_history.append(result)
             print()
 
         # end the game if rounds are done
         if rounds_played == rounds:
-            valid = True
+            loop_question = True
 
     # print game stats and rating
+    print()
     statement_gen("Game Summary", "*")
+    print()
     statement_gen("Correct: {} | Incorrect: {}".format(rounds_won, rounds_lost), "=")
     print()
 
@@ -213,23 +224,25 @@ while keep_going == "":
     average = 1 / rounds_played * rounds_won
 
     if 1 >= average >= 0.8:
-        print("Rating: *****")
-    elif 0.8 > average >= 0.6:
-        print("Rating: ****")
-    elif 0.6 > average >= 0.4:
-        print("Rating: ***")
-    elif 0.4 > average >= 0.2:
-        print("Rating: **")
-    elif 0.2 > average >= 0:
-        print("Rating: *")
+        statement_gen("Your Performance: *****", "!")
+    elif 0.8 > average > 0.6:
+        statement_gen("Your Performance: ****", "!")
+    elif 0.6 >= average > 0.4:
+        statement_gen("Your Performance: ***", "!")
+    elif 0.4 >= average > 0.2:
+        statement_gen("Your Performance: **", "!")
+    elif 0.2 >= average > 0:
+        statement_gen("Your Performance: *", "!")
 
     # ask if user wants to see round history
     show_rounds = input("Press <enter> to see your round history or any key to move on: ")
     if show_rounds == "":
         print()
-        for item in game_summary:
+        for item in round_history:
             print(item)
     print()
     # ask if user wants to keep playing, if not then end loop
-    keep_going = input("Press <enter> to keep going or any key to quit: ")
+    loop_game = input("Press <enter> to keep going or any key to quit: ")
+# thank user for playing when program ends
+print()
 print("Thanks for playing.")

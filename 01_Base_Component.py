@@ -2,6 +2,7 @@ import random
 
 # Functions
 
+
 # string checker, checks for valid input from a list
 def string_checker(question, valid_list, error):
     # loop function
@@ -18,6 +19,7 @@ def string_checker(question, valid_list, error):
         else:
             print(error)
             print()
+
 
 # round checker, makes sure round input is valid and checks for infinite mode
 def check_rounds():
@@ -44,6 +46,7 @@ def check_rounds():
                 continue
         return response
 
+
 # number checker, makes sure that answers are valid
 def num_check():
     valid = False
@@ -53,22 +56,27 @@ def num_check():
             response = int(input("Answer: "))
             # if given answer is negative, print error
             if response < 0:
-                print("Please enter an integer above 0.")
+                print("Please enter an integer that is 0 or above.")
             else:
                 return response
         # if answer is not an integer, print error
         except ValueError:
             print("Please enter an integer.")
 
+
 # instruction function, prints instructions
 def instructions():
     print()
     statement_gen("INSTRUCTIONS", "*")
     print("- First,  we'll ask you which difficulty you'd like to play. The options are easy, medium and hard.")
-    print("- Next, you'll give us the amount of questions that you'd like to answer. You can choose to go into infinite mode by pressing <enter>.")
+    print("- Next, you'll give us the amount of questions that you'd like to answer. You can choose to go"
+          " into infinite mode by pressing <enter>.")
     print("- Once the game has been set up, you'll be asked math questions which you will need to answer.")
-    print("- The game ends either when you've run out of questions, or when you use the exit code '12345' to end the game.")
-    print("- Once the game has ended, we'll show you your stats and rate your performance out of 5 stars, 1 being the worst score and 5 being the best.")
+    print("- The game ends either when you've run out of questions, or when you use the exit code '12345' to end the"
+          " game.")
+    print("- Once the game has ended, we'll show you your stats and rate your performance out of 5 stars, "
+          "1 being the worst score and 5 being the best.")
+
 
 # statement generator, decorates important statements
 def statement_gen(statement, decoration):
@@ -166,7 +174,7 @@ while loop_game == "":
             x = random.randint(1, high_num_multi)
             y = random.randint(1, high_num_multi)
 
-            # if multiplication chosen, get multiplcation question
+            # if multiplication chosen, get multiplication question
             if operation_chosen == 3:
                 problem = "{} * {}".format(x, y)
 
@@ -183,7 +191,11 @@ while loop_game == "":
             problem = problem.replace("*", "x")
         elif operation_chosen == 4:
             problem = problem.replace("/", "÷")
+        # ask the user for their answer and remind user every 5 rounds that they can use
+        # the exit code to stop the game at any time
         print("Question: {}".format(problem))
+        if questions_done % 5 == 0:
+            print("Reminder: Enter '12345' as your answer to exit the game!")
         user_answer = num_check()
 
         # end the game if exit code given (don't allow if no questions answered)
@@ -205,7 +217,8 @@ while loop_game == "":
         else:
             print("Incorrect, the answer was {}.".format(answer))
             questions_incorrect += 1
-            result = "Question {}: You said {} = {:.0f} which is incorrect.".format(questions_done, problem, user_answer)
+            result = "Question {}: You said {} = {:.0f} which is incorrect, the answer was {}."\
+                .format(questions_done, problem, user_answer, answer)
             round_history.append(result)
             print()
 
@@ -246,6 +259,6 @@ while loop_game == "":
     print()
     # ask if user wants to keep playing, if not then end loop
     loop_game = input("Press <enter> to keep going or any key to quit: ")
+    print()
 # thank user for playing when program ends
-print()
 print("Thanks for playing.")

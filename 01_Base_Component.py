@@ -94,7 +94,7 @@ def statement_gen(statement, decoration):
 # lists for string checker valid input and game summary
 diffs = ["easy", "medium", "hard"]
 yes_no = ["yes", "no"]
-round_history = []
+
 
 # heading for game
 statement_gen("Maths Quiz", "?")
@@ -109,7 +109,8 @@ print()
 # loop the game
 loop_game = ""
 while loop_game == "":
-    
+
+    round_history = []
     # get the number of rounds (or take in <blank> for infinite mode)
     questions = check_rounds()
     print()

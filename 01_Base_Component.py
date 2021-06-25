@@ -194,9 +194,9 @@ while loop_game == "":
             problem = problem.replace("/", "÷")
         # ask the user for their answer and remind user every 5 rounds that they can use
         # the exit code to stop the game at any time
-        print("Question: {}".format(problem))
         if questions_done % 5 == 0:
             print("Reminder: Enter '12345' as your answer to exit the game!")
+        print("Question: {}".format(problem))
         user_answer = num_check()
 
         # end the game if exit code given (don't allow if no questions answered)

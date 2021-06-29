@@ -85,7 +85,7 @@ print()
 # loop the game
 loop_game = ""
 while loop_game == "":
-
+    # reset round history every game
     round_history = []
     # get the number of rounds (or take in <blank> for infinite mode)
     questions = num_check("How many questions would you like to play? (or give me 0 for infinite mode): ", "Please type an integer that is 0 or higher (give me 0 to activate infinite mode).")
@@ -200,10 +200,11 @@ while loop_game == "":
             print()
 
         # end the game if completed the amount of questions given
-        if questions_done == questions:
-            loop_question = True
+        if questions_done != 0:
+            if questions_done == questions:
+                loop_question = True
 
-    # print game stats and rating
+    # print game stats and amount of questions correct/incorrect
     print()
     statement_gen("Game Summary", "*")
     print()
@@ -226,6 +227,7 @@ while loop_game == "":
         statement_gen("Your Performance: **", "!")
     elif 0.2 >= average >= 0:
         statement_gen("Your Performance: *", "!")
+    print()
 
     # ask if user wants to see round history
     show_rounds = input("Press <enter> to see your round history or any key to move on: ")
